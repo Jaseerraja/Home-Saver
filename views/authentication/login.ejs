@@ -1,0 +1,367 @@
+<head>
+  <style>
+    @import url("https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap");
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+    html,
+    body {
+      display: grid;
+      height: 100%;
+      width: 100%;
+      place-items: center;
+      background: -webkit-linear-gradient(
+        left,
+        rgba(33, 8, 28, 1),
+        #4d1434,
+        rgba(77, 20, 52, 1)
+      );
+    }
+    ::selection {
+      background: #4d1434;
+      color: #fff;
+    }
+    .wrapper {
+      overflow: hidden;
+      width: 450px;
+      background: #fff;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.1);
+    }
+    .wrapper .title-text {
+      display: flex;
+      width: 200%;
+    }
+    .wrapper .title {
+      width: 50%;
+      font-size: 35px;
+      font-weight: 600;
+      text-align: center;
+      transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+    .wrapper .slide-controls {
+      position: relative;
+      display: flex;
+      height: 50px;
+      width: 100%;
+      overflow: hidden;
+      margin: 30px 0 10px 0;
+      justify-content: space-between;
+      border: 1px solid lightgrey;
+      border-radius: 15px;
+    }
+    .slide-controls .slide {
+      height: 100%;
+      width: 100%;
+      color: #fff;
+      font-size: 18px;
+      font-weight: 500;
+      text-align: center;
+      line-height: 48px;
+      cursor: pointer;
+      z-index: 1;
+      transition: all 0.6s ease;
+    }
+    .slide-controls label.signup {
+      color: #000;
+    }
+    .slide-controls .slider-tab {
+      position: absolute;
+      height: 100%;
+      width: 50%;
+      left: 0;
+      z-index: 0;
+      border-radius: 15px;
+      background: -webkit-linear-gradient(
+        left,
+        rgba(33, 8, 28, 1),
+        #4d1434,
+        rgba(77, 20, 52, 1)
+      );
+      transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+    input[type="radio"] {
+      display: none;
+    }
+    #signup:checked ~ .slider-tab {
+      left: 50%;
+    }
+    #signup:checked ~ label.signup {
+      color: #fff;
+      cursor: default;
+      user-select: none;
+    }
+    #signup:checked ~ label.login {
+      color: #000;
+    }
+    #login:checked ~ label.signup {
+      color: #000;
+    }
+    #login:checked ~ label.login {
+      cursor: default;
+      user-select: none;
+    }
+    .wrapper .form-container {
+      width: 100%;
+      overflow: hidden;
+    }
+    .form-container .form-inner {
+      display: flex;
+      width: 200%;
+    }
+    .form-container .form-inner form {
+      width: 50%;
+      transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+    .form-inner form .field {
+      height: 50px;
+      width: 100%;
+      margin-top: 20px;
+    }
+    .form-inner form .field input {
+      height: 100%;
+      width: 100%;
+      outline: none;
+      padding-left: 15px;
+      border-radius: 15px;
+      border: 1px solid lightgrey;
+      border-bottom-width: 2px;
+      font-size: 17px;
+      transition: all 0.3s ease;
+    }
+
+    form .field input:focus::placeholder {
+      color: #4d1434;
+    }
+    .form-inner form .pass-link {
+      margin-top: 5px;
+    }
+    .form-inner form .signup-link {
+      text-align: center;
+      margin-top: 30px;
+    }
+    .form-inner form .pass-link a,
+    .form-inner form .signup-link a {
+      color: #1a75ff;
+      text-decoration: none;
+    }
+    .form-inner form .pass-link a:hover,
+    .form-inner form .signup-link a:hover {
+      text-decoration: underline;
+    }
+    form .btn {
+      height: 50px;
+      width: 100%;
+      border-radius: 15px;
+      position: relative;
+      overflow: hidden;
+    }
+    form .btn .btn-layer {
+      height: 100%;
+      width: 300%;
+      position: absolute;
+      left: -100%;
+      background: -webkit-linear-gradient(
+        left,
+        rgba(33, 8, 28, 1),
+        #4d1434,
+        rgba(77, 20, 52, 1)
+      );
+      border-radius: 15px;
+      transition: all 0.4s ease;
+    }
+    form .btn:hover .btn-layer {
+      left: 0;
+    }
+    form .btn input[type="submit"] {
+      height: 100%;
+      width: 100%;
+      z-index: 1;
+      position: relative;
+      background: none;
+      border: none;
+      color: #fff;
+      padding-left: 0;
+      border-radius: 15px;
+      font-size: 20px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<%- include('../nav-footer/navbardisplay') %>
+<div class="wrapper">
+  <div class="title-text">
+    <div class="title login">Login</div>
+  </div>
+  <div class="form-container">
+    <div class="slide-controls">
+      <input
+        type="radio"
+        name="slide"
+        id="login"
+        value="user"
+        onchange="changeFormAction()"
+        checked
+      />
+      <input
+        type="radio"
+        name="slide"
+        id="signup"
+        value="business"
+        onchange="changeFormAction()"
+      />
+      <label for="login" class="slide login">User</label>
+      <label for="signup" class="slide signup">Business</label>
+      <div class="slider-tab"></div>
+    </div>
+    <div class="form-inner">
+      <form
+        action="/login/user"
+        class="business"
+        method="post"
+        autocomplete="off"
+        onsubmit="return validation()"
+      >
+        
+        <div class="field">
+          <input
+            type="email"
+            id="email"
+            name="elog"
+            placeholder="Email Address"
+            required
+          />
+          <span id="emaill" class="validation-message"></span>
+        </div>
+       
+        <div class="field">
+          <input
+            type="password"
+            id="password"
+            name="plog"
+            placeholder="Password"
+            required
+          />
+          <span id="passs" class="validation-message"></span>
+        </div>
+        <div class="field btn">
+          <div class="btn-layer"></div>
+          <input type="submit" value="Login" />
+        </div>
+        <div class="signup-link">
+          Not registered <a href="/homesaver/signup">Signup now</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script>
+  function changeFormAction() {
+    var userType;
+    var radios = document.getElementsByName("slide");
+    for (var i = 0; i < radios.length; i++) {
+      if (radios[i].checked) {
+        userType = radios[i].id;
+        break;
+      }
+    }
+    var form = document.querySelector("form");
+    if (userType === "login") {
+      form.action = "/login/user";
+    } else if (userType === "signup") {
+      form.action = "/login/business";
+    }
+  }
+  function validation() {
+        
+        var pass = document.getElementById("password").value;
+
+        var email = document.getElementById("email").value;
+      
+      
+        
+        if (pass == "") {
+          document.getElementById("passs").innerHTML = "Please write password";
+          return false;
+        }
+        if (pass.length < 8) {
+          document.getElementById("passs").innerHTML =
+            "Password should contain 8 characters";
+          return false;
+        }
+        if (pass.search(/[0-9]/) == -1) {
+          document.getElementById("passs").innerHTML =
+            "Password should contain a number";
+          return false;
+        }
+        if (pass.search(/[a-z]/) == -1) {
+          document.getElementById("passs").innerHTML =
+            "Password should contain a lowercase character";
+          return false;
+        }
+        if (pass.search(/[A-Z]/) == -1) {
+          document.getElementById("passs").innerHTML =
+            "Password should contain an uppercase character";
+          return false;
+        }
+        if (pass.search(/[!\@\#\$\%\^\&\*\_\+\,\-\.\<\>\?]/) == -1) {
+          document.getElementById("passs").innerHTML =
+            "Password should contain a special character";
+          return false;
+        } else {
+          document.getElementById("passs").innerHTML = "";
+        }
+        
+        
+        if (email == "") {
+          document.getElementById("emaill").innerHTML = "Please write email";
+        }
+      }
+
+      document.getElementById("authForm").addEventListener("submit", async function(e) {
+    e.preventDefault();
+    
+    // Clear previous validation messages
+    document.getElementById("emaill").textContent = "";
+    document.getElementById("passs").textContent = "";
+
+    // Form data
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    // Client-side validation
+    if (!validateForm(email, password)) {
+      return;
+    }
+
+    // Submit the form data via fetch
+    try {
+      const res = await fetch(this.action, {
+        method: 'POST',
+        body: JSON.stringify({ email, password }),
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      const data = await res.json();
+        console.log(data)
+      if (res.ok) {
+        // If login is successful
+        if (data.newData) {
+         const userID = data.userID; // Extract userID from response
+    window.location.assign(`/homesaver/index?userID=${userID}`);
+        }
+      } else {
+        // If login is unsuccessful, show an alert
+        alert('Incorrect email or password');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('An error occurred. Please try again later.');
+    }
+  });
+</script>
